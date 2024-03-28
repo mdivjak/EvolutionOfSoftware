@@ -15,6 +15,8 @@ import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import piano.music.Chord;
 import piano.music.Composition;
@@ -35,6 +37,26 @@ public class Tests {
     void uniqueUserObject() {
         User user = User.getInstance();
         assertSame(testedUser, user);
+    }
+
+    @Test
+    void setUserDataTest() {
+        testedUser.setData("Marko", "Divjak", "mdivjak");
+
+        assertEquals("Marko", testedUser.getFirstName());
+        assertEquals("Divjak", testedUser.getLastName());
+        assertEquals("mdivjak", testedUser.getUsername());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "markodivjak, true",
+        "marko divjak, false"
+    })
+    void validateUsername(String username, boolean expected) {
+        boolean isValid = testedUser.setData("Marko", "Divjak", username);
+
+        assertEquals(expected, isValid);
     }
     
     @Test
