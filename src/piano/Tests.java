@@ -1,4 +1,5 @@
 package piano;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.io.BufferedReader;
