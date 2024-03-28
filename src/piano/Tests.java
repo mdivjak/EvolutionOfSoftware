@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import piano.music.Chord;
@@ -20,6 +21,19 @@ import piano.music.Note;
 import piano.music.Pause;
 
 public class Tests {
+
+    private User testedUser;
+
+    @BeforeEach
+    void Setup() {
+        testedUser = User.getInstance();
+    }
+
+    @Test
+    void uniqueUserObject() {
+        User user = User.getInstance();
+        assertSame(testedUser, user);
+    }
     
     @Test
     void printCompositionTest() {
