@@ -61,6 +61,6 @@ public class User {
     }
 
     public String getSignature() {
-        throw new UnsupportedOperationException();
+        return firstName + " " + lastName;
     }
 }

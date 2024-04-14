@@ -60,6 +60,7 @@ public class TextFormatter extends Formatter {
 			}
 			previous = current;
 		}
+		writer.write(appendSignature());
 		writer.close();
 	}
 
@@ -84,6 +85,6 @@ public class TextFormatter extends Formatter {
 	}
 
 	public String appendSignature() {
-		throw new UnsupportedOperationException();
+		return "\n\nBy: " + User.getInstance().getSignature();
 	}
 }
