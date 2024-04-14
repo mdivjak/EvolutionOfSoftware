@@ -40,4 +40,17 @@ public class User {
     public String getUsername() {
         return instance.username;
     }
+
+    public void clearData() {
+		instance.firstName = "";
+		instance.lastName = "";
+		instance.username = "";
+	}
+
+    public boolean hasData() {
+		if (instance.firstName.equals("") ||
+				instance.lastName.equals("") ||
+				instance.username.equals("")) return false;
+		return true;
+	}
 }

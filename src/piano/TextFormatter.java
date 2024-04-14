@@ -62,7 +62,7 @@ public class TextFormatter extends Formatter {
 
 	@Override
 	public boolean canExport() {
-		return true;
+		return composition.canExport();
 	}
 
 	@Override

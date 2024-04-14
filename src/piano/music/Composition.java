@@ -15,6 +15,7 @@ import piano.Iterator;
 import piano.List;
 import piano.NoteMaps;
 import piano.SymbolList;
+import piano.User;
 
 public class Composition implements ExportableComposition {
 
@@ -135,6 +136,8 @@ public class Composition implements ExportableComposition {
 
 	@Override
 	public boolean canExport() {
+		User user = User.getInstance();
+		if (!user.hasData()) return false;
 		return true;
 	}
 }

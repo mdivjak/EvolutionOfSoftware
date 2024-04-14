@@ -114,4 +114,31 @@ public class Tests {
         }
 		
     }
+
+    @Test
+    void removeUserTest() {
+        testedUser.clearData();
+
+        assertEquals("", testedUser.getFirstName());
+		assertEquals("", testedUser.getLastName());
+		assertEquals("", testedUser.getUsername());
+    }
+
+    @Test
+    void allowExportTest() {
+        Composition composition = new Composition();
+        testedUser.setData("Marko", "Divjak", "mdivjak");
+
+        boolean output = composition.canExport();
+        assertEquals(true, output);
+    }
+
+    @Test
+    void preventExportTest() {
+        Composition composition = new Composition();
+        testedUser.clearData();
+
+        boolean output = composition.canExport();
+        assertEquals(false, output);
+    }
 }

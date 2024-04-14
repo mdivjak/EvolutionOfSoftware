@@ -106,7 +106,7 @@ public class MidiFormatter extends Formatter {
 
 	@Override
 	public boolean canExport() {
-		return true;
+		return composition.canExport();
 	}
 
 	@Override
