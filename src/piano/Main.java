@@ -38,7 +38,7 @@ public class Main extends Frame {
 	private Checkbox midi, text;
 
 	// Add user
-	private Button addUserButton;
+	private Button addUserButton, removeUserButton;
 	private UserDialog userDialog = new UserDialog(this, "User", true);
 	
 	private static final Color PRIMARY_COLOR = new Color(255, 193, 7);
@@ -109,9 +109,7 @@ public class Main extends Frame {
 				public void actionPerformed(ActionEvent e) {
 					User user = User.getInstance();
 					if (!user.setData(firstName.getText(), lastName.getText(), username.getText())
-							|| firstName.getText().equals("")
-							|| lastName.getText().equals("")
-							|| username.getText().equals("")) {
+							|| !user.hasData()) {
 						error.setVisible(true);
 					}
 					else {
@@ -154,7 +152,18 @@ public class Main extends Frame {
 		pause.addActionListener(e -> { visualComposition.pause(); });
 		stop.addActionListener(e -> { visualComposition.stop(); });
 
-		addUserButton.addActionListener(e -> { userDialog.setVisible(true); });
+		addUserButton.addActionListener(e -> {
+			userDialog.setVisible(true);
+			addUserButton.setEnabled(false);
+			removeUserButton.setEnabled(true);
+		});
+		removeUserButton.addActionListener(e -> {
+			User.getInstance().clearData();
+
+			addUserButton.setEnabled(true);
+			removeUserButton.setEnabled(false);
+		});
+		removeUserButton.setEnabled(false);
 		
 		notes.addItemListener(e -> {
 			if(e.getStateChange() == ItemEvent.SELECTED)
@@ -214,6 +223,7 @@ public class Main extends Frame {
 		pause.setBackground(PRIMARY_COLOR);
 		stop.setBackground(PRIMARY_COLOR);
 		addUserButton.setBackground(PRIMARY_COLOR);
+		removeUserButton.setBackground(PRIMARY_COLOR);
 		startRecording.setBackground(PRIMARY_COLOR);
 		stopRecording.setBackground(PRIMARY_COLOR);
 		
@@ -223,6 +233,7 @@ public class Main extends Frame {
 		pause.setForeground(SECONDARY_COLOR);
 		stop.setForeground(SECONDARY_COLOR);
 		addUserButton.setForeground(SECONDARY_COLOR);
+		removeUserButton.setForeground(SECONDARY_COLOR);
 		startRecording.setForeground(SECONDARY_COLOR);
 		stopRecording.setForeground(SECONDARY_COLOR);
 		
@@ -260,6 +271,7 @@ public class Main extends Frame {
 
 		Panel userButtonPanel = new Panel();
 		userButtonPanel.add(addUserButton = new Button("Add user"));
+		userButtonPanel.add(removeUserButton = new Button("Remove user"));
 		
 		leftControlPanel.add(userButtonPanel);
 		

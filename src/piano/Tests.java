@@ -141,4 +141,19 @@ public class Tests {
         boolean output = composition.canExport();
         assertEquals(false, output);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Marko, Divjak, mdivjak, true",
+		"'' , '', '', false",
+		"Marko, Divjak, '', false",
+		"Marko, '', mdivjak, false",
+		" '', Divjak, mdivjak, false"
+    })
+    void hasDataTest(String firstname, String lastname, String username, boolean expected) {
+        testedUser.setData(firstname, lastname, username);
+        boolean output = testedUser.hasData();
+
+        assertEquals(expected, output);
+    }
 }
