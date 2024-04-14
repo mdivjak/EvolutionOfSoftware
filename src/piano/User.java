@@ -59,4 +59,8 @@ public class User {
 
         return getInstance().username + "/" + fileName;
     }
+
+    public String getSignature() {
+        throw new UnsupportedOperationException();
+    }
 }

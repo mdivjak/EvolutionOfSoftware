@@ -182,4 +182,21 @@ public class Tests {
 
 		assertEquals("Export is forbidden!", thrown.toString());
     }
+
+    @Test
+    void returnUsersSignatureTest() {
+        testedUser.setData("Marko", "Divjak", "mdivjak");
+        String signature = testedUser.getSignature();
+
+        assertEquals("Marko Divjak", signature);
+    }
+
+    @Test
+    void returnSignedTextTest() {
+        testedUser.setData("Marko", "Divjak", "mdivjak");
+        TextFormatter textFormatter = new TextFormatter(new Composition(), "directory");
+
+        String expected = "\n\nBy: Marko Divjak";
+        assertEquals(expected, textFormatter.appendSignature());
+    }
 }

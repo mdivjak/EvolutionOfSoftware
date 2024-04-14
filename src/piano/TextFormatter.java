@@ -82,4 +82,8 @@ public class TextFormatter extends Formatter {
 			System.err.println("Directory does not exist");
 		}
 	}
+
+	public String appendSignature() {
+		throw new UnsupportedOperationException();
+	}
 }
