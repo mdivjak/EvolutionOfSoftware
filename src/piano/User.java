@@ -53,4 +53,10 @@ public class User {
 				instance.username.equals("")) return false;
 		return true;
 	}
+
+    public static String getExportPath(String fileName) throws ExportForbiddenException {
+        if(!getInstance().hasData()) throw new ExportForbiddenException();
+
+        return getInstance().username + "/" + fileName;
+    }
 }

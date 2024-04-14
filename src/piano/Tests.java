@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -155,5 +156,30 @@ public class Tests {
         boolean output = testedUser.hasData();
 
         assertEquals(expected, output);
+    }
+
+    @Test
+    void returnUserExportPathTest() {
+        testedUser.setData("Marko", "Divjak", "mdivjak");
+        String fileName = "";
+        try {
+            fileName = User.getExportPath("file.txt");
+        } catch (ExportForbiddenException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        assertEquals("mdivjak/file.txt", fileName);
+    }
+
+    @Test
+    void returnNoExportPathTest() {
+        testedUser.clearData();
+
+        ExportForbiddenException thrown = Assertions.assertThrows(ExportForbiddenException.class, () -> {
+			User.getExportPath("file.txt");
+		}, "ExportForbiddenException was expected");
+
+		assertEquals("Export is forbidden!", thrown.toString());
     }
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
@@ -113,8 +115,15 @@ public class MidiFormatter extends Formatter {
 	public void exportComposition() throws FileNotFoundException, UnsupportedEncodingException {
 		if (!canExport()) {
 			System.err.println("Eksportovanje nije moguce\n");
+			return;
+		}
+		
+		try {
+			Files.createDirectories(Paths.get(User.getInstance().getUsername()));
+			export(directory, composition);
+		} catch (IOException e) {
+			System.err.println("Directory does not exist");
 		}
 
-		export(directory, composition);
 	}			
 }

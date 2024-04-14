@@ -198,9 +198,18 @@ public class Main extends Frame {
 			Composition composition = piano.getRecordedComposition();
 			
 			if(composition == null) return;
+
+			String directory = "";
+			try {
+				directory = User.getExportPath(fileName);
+			} catch (ExportForbiddenException e1) {
+				System.err.println("Exporting is forbidden");
+				return;
+			}
+
 			boolean textFormat = text.getState();
 			ExportableComposition exportableComposition = null;
-			exportableComposition = textFormat ? new TextFormatter(composition, fileName) : new MidiFormatter(composition, fileName);
+			exportableComposition = textFormat ? new TextFormatter(composition, directory) : new MidiFormatter(composition, directory);
 			try {
 				exportableComposition.exportComposition();
 				startRecording.setEnabled(true);

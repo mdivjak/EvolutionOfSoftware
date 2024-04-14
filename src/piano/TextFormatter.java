@@ -1,8 +1,11 @@
 package piano;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import piano.music.Chord;
 import piano.music.Composition;
@@ -69,8 +72,14 @@ public class TextFormatter extends Formatter {
 	public void exportComposition() throws FileNotFoundException, UnsupportedEncodingException {
 		if(!canExport()) {
 			System.err.println("Eksportovanje je zabranjeno");
+			return;
 		}
 		
-		export(directory, composition);
+		try {
+			Files.createDirectories(Paths.get(User.getInstance().getUsername()));
+			export(directory, composition);
+		} catch (IOException e) {
+			System.err.println("Directory does not exist");
+		}
 	}
 }
