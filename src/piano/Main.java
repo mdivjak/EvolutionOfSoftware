@@ -4,11 +4,14 @@ import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -33,6 +36,10 @@ public class Main extends Frame {
 	private Button exportFileButton;
 	private Button startRecording, stopRecording;
 	private Checkbox midi, text;
+
+	// Add user
+	private Button addUserButton;
+	private UserDialog userDialog = new UserDialog(this, "User", true);
 	
 	private static final Color PRIMARY_COLOR = new Color(255, 193, 7);
 	private static final Color SECONDARY_COLOR = new Color(86, 86, 86);
@@ -56,6 +63,83 @@ public class Main extends Frame {
 		});
 		setVisible(true);
 	}
+
+	private class UserDialog extends Dialog implements ActionListener
+	{
+		private Button submit;
+		private TextField firstName, lastName, username;
+
+		public UserDialog(Frame f, String s, boolean b) {
+			super(f, s, b);
+			setSize(500, 300);
+			setLocationRelativeTo(null);
+
+			Label l = new Label("Unesite podatke o korisniku", Label.CENTER);
+
+			this.add(l, "North");
+			Panel panel = new Panel(new GridLayout(5, 1));
+			this.add(panel, "South");
+
+			Panel pan1 = new Panel();
+			pan1.add(new Label("First name:", Label.RIGHT));
+			firstName = new TextField("", 50);
+			pan1.add(firstName);
+
+			Panel pan2 = new Panel();
+			pan2.add(new Label("Last name:", Label.RIGHT));
+			lastName = new TextField("", 50);
+			pan2.add(lastName);
+
+			Panel pan3 = new Panel();
+			pan3.add(new Label("Username:", Label.RIGHT));
+			username = new TextField("", 50);
+			pan3.add(username);
+
+			Label error = new Label("Podaci nisu ispravno uneti", Label.CENTER);
+
+			error.setForeground(Color.red);
+			error.setVisible(false);
+
+			submit = new Button("Submit");
+			submit.setForeground(SECONDARY_COLOR);
+			submit.setBackground(PRIMARY_COLOR);
+			submit.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					User user = User.getInstance();
+					if (!user.setData(firstName.getText(), lastName.getText(), username.getText())
+							|| firstName.getText().equals("")
+							|| lastName.getText().equals("")
+							|| username.getText().equals("")) {
+						error.setVisible(true);
+					}
+					else {
+						firstName.setText("");
+						lastName.setText("");
+						username.setText("");
+						error.setVisible(false);
+
+						setVisible(false);
+					}
+				}
+			});
+
+			panel.add(pan1); 
+			panel.add(pan2);
+			panel.add(pan3);
+			panel.add(submit);
+			panel.add(error);
+
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					setVisible(false);
+				}
+			});
+		}
+
+		public void actionPerformed(ActionEvent e) {}
+	}
 	
 	private void addListeners() {
 		loadFileButton.addActionListener(e -> {
@@ -69,6 +153,8 @@ public class Main extends Frame {
 		play.addActionListener(e -> { visualComposition.play(); });
 		pause.addActionListener(e -> { visualComposition.pause(); });
 		stop.addActionListener(e -> { visualComposition.stop(); });
+
+		addUserButton.addActionListener(e -> { userDialog.setVisible(true); });
 		
 		notes.addItemListener(e -> {
 			if(e.getStateChange() == ItemEvent.SELECTED)
@@ -127,6 +213,7 @@ public class Main extends Frame {
 		play.setBackground(PRIMARY_COLOR);
 		pause.setBackground(PRIMARY_COLOR);
 		stop.setBackground(PRIMARY_COLOR);
+		addUserButton.setBackground(PRIMARY_COLOR);
 		startRecording.setBackground(PRIMARY_COLOR);
 		stopRecording.setBackground(PRIMARY_COLOR);
 		
@@ -135,6 +222,7 @@ public class Main extends Frame {
 		play.setForeground(SECONDARY_COLOR);
 		pause.setForeground(SECONDARY_COLOR);
 		stop.setForeground(SECONDARY_COLOR);
+		addUserButton.setForeground(SECONDARY_COLOR);
 		startRecording.setForeground(SECONDARY_COLOR);
 		stopRecording.setForeground(SECONDARY_COLOR);
 		
@@ -145,7 +233,7 @@ public class Main extends Frame {
 		
 		Panel controlPanel = new Panel(new GridLayout(1, 2));
 		
-		Panel leftControlPanel = new Panel(new GridLayout(3, 1));
+		Panel leftControlPanel = new Panel(new GridLayout(4, 1));
 		
 		Panel loadFilePanel = new Panel();
 		loadFilePanel.add(new Label("Composition filepath:"));
@@ -169,6 +257,11 @@ public class Main extends Frame {
 		playerButtons.add(stop = new Button("Stop"));
 		
 		leftControlPanel.add(playerButtons);
+
+		Panel userButtonPanel = new Panel();
+		userButtonPanel.add(addUserButton = new Button("Add user"));
+		
+		leftControlPanel.add(userButtonPanel);
 		
 		controlPanel.add(leftControlPanel);
 		
