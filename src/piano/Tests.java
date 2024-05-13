@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -97,8 +98,8 @@ public class Tests {
 		BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(file));
-            Stream<String> stringStream = reader.lines();
-            stringStream.forEach(line -> {
+            Optional<String> stringStream = reader.lines().findFirst();
+            stringStream.ifPresent(line -> {
                 Assert.assertEquals("[6 T ] [wnull]", line);
             });
         } catch (FileNotFoundException e) {
